@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import { Content, Button } from "./styles";
-import { default as UserInterface } from "./userInterface";
+import { User as UserInterface } from "./userInterface";
 
 const User: React.FC = () => {
   const [user, setUser] = useState<UserInterface>();
