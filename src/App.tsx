@@ -1,8 +1,9 @@
-import React from "react";
+import React, { FC } from "react";
+import 'antd/dist/antd.css';
 
 import User from "./components/User";
 
-const App: React.FC = () => {
+const App: FC = () => {
   return <User />;
 };
 

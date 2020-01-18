@@ -1,54 +1,34 @@
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 
-import { Content, Button } from "./styles";
+import { Content, Button, UserName, UserAge, UserSex, UserBio } from "./styles";
 import { User as UserInterface } from "./userInterface";
+import ButtonNewUser from "../ButtonNewUser";
+import api from "../../services/api";
 
-const User: React.FC = () => {
-  const [user, setUser] = useState<UserInterface>();
+const User: FC = () => {
+  const [users, setUsers] = useState<[UserInterface]>();
 
   async function loadData() {
-    try {
-      const response = await fetch("https://api.github.com/users/feliperomao"),
-        data = await response.json();
+    const response = await api.get("/users"),
+      { data } = response,
+      { users: usersData } = data;
 
-      setUser(data);
-    } catch (err) {
-      console.log("ERROR >", err);
-    }
+    setUsers(usersData);
   }
 
   return (
-    <div>
-      {user && (
-        <Content>
-          <a
-            href={user.avatar_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              color: "#FFF",
-              fontWeight: "bold"
-            }}
-          >
-            Avatar do usuário
-          </a>
-
-          <div>
-            <p>
-              <strong>Nome do usuário:</strong> {user.name}
-            </p>
-            <p>
-              <strong>Login do usuário:</strong> {user.login}
-            </p>
-
-            <article>
-              <strong>Biografia:</strong> {user.bio}
-            </article>
-          </div>
+    <>
+      {users?.map(user => (
+        <Content key={user._id}>
+          <UserName>Nome: {user.name}</UserName>
+          <UserAge>Idade: {user.age}</UserAge>
+          <UserSex>Sexo: {user.sex}</UserSex>
+          <UserBio>Biografia: {user.bio}</UserBio>
         </Content>
-      )}
+      ))}
       <Button onClick={loadData}>Buscar Usuário</Button>
-    </div>
+      <ButtonNewUser>Adicionar Usuário</ButtonNewUser>
+    </>
   );
 };
 
